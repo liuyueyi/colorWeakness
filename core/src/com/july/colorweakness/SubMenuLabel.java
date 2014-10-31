@@ -29,9 +29,9 @@ public class SubMenuLabel extends Label {
 		super(text, style);
 		this.type = type;
 		this.index = index;
-		setAlignment(Align.center);
+		setAlignment(Align.center | Align.top);
 
-		if (type == THREE && index == 2) {
+		if (type == THREE && index == 1) {
 			setSize(0, 0);
 			setPosition(Constants.width / 3, y);
 		} else {
@@ -41,6 +41,7 @@ public class SubMenuLabel extends Label {
 			else if (index == 2 || (index == 1 && type == TWO))
 				setPosition(Constants.width + getWidth(), y);
 		}
+		
 	}
 
 	
@@ -50,7 +51,7 @@ public class SubMenuLabel extends Label {
 		if (type == THREE && index == 2) {
 			a2 = Actions.scaleTo(0, 0, Gdx.graphics.getDeltaTime() * 10);
 		}
-		a2 = Actions.moveTo(getX() + direction * Constants.width / 2, getY(),
+		a2 = Actions.moveTo(getX() + direction * Constants.width / type, getY(),
 				Gdx.graphics.getDeltaTime() * 10);
 		Action a3 = Actions.fadeOut(Gdx.graphics.getDeltaTime() * 10);
 		this.addAction(Actions.sequence(a1, Actions.parallel(a2, a3)));
@@ -60,11 +61,11 @@ public class SubMenuLabel extends Label {
 	public void setMoveInAction(int direction, float delayTime) {
 		Action a1 = Actions.delay(delayTime);
 		Action a2;
-		if (type == THREE && index == 2) {
+		if (type == THREE && index == 1) {
 			a2 = Actions.scaleTo(Constants.width / 3, Constants.menuHeight / 3,
 					Gdx.graphics.getDeltaTime() * 10);
 		}
-		a2 = Actions.moveTo(getX() - direction * Constants.width / 2, getY(),
+		a2 = Actions.moveTo(getX() - direction * Constants.width / type, getY(),
 				Gdx.graphics.getDeltaTime() * 10);
 		Action a3 = Actions.fadeIn(Gdx.graphics.getDeltaTime() * 10);
 		this.addAction(Actions.sequence(a1, Actions.parallel(a2, a3)));

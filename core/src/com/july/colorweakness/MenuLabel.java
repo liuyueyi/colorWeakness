@@ -22,6 +22,9 @@ public class MenuLabel extends Label {
 	}
 
 	public void setMoveOutAction(int direction, float delayTime) {
+		if (getX() < -10 || getX() > Constants.width - 10)
+			return;
+		
 		Action a1 = Actions.delay(delayTime);
 		Action a2 = Actions.moveTo(getX() + direction * getWidth(), getY(),
 				Gdx.graphics.getDeltaTime() * 10);

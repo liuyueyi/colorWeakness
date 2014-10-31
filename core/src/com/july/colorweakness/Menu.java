@@ -70,12 +70,14 @@ public class Menu extends ScreenAdapter {
 		startSub[2] = new SubMenuLabel("90s\"",
 				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
 				zen.getY());
+
 		startSub[3] = new SubMenuLabel("4s\"", Assert.getInstance().blackStyle,
 				SubMenuLabel.THREE, 0, normal.getY());
 		startSub[4] = new SubMenuLabel("6s\"", Assert.getInstance().whiteStyle,
 				SubMenuLabel.THREE, 1, normal.getY());
 		startSub[5] = new SubMenuLabel("8s\"", Assert.getInstance().blackStyle,
 				SubMenuLabel.THREE, 2, normal.getY());
+
 		startSub[6] = new SubMenuLabel("50s\"",
 				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0,
 				countdown.getY());
@@ -85,8 +87,12 @@ public class Menu extends ScreenAdapter {
 		startSub[8] = new SubMenuLabel("90s\"",
 				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
 				countdown.getY());
+
 		for (int i = 0; i < 9; i++) {
 			stage.addActor(startSub[i]);
+			System.out.println(i + " x : " + startSub[i].getX() + " y : "
+					+ startSub[i].getY() + " width : " + startSub[i].getWidth()
+					+ " height : " + startSub[i].getHeight());
 		}
 
 	}
@@ -146,13 +152,13 @@ public class Menu extends ScreenAdapter {
 		normal.setMoveOutAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
 		countdown.setMoveOutAction(Constants.LEFT,
 				Gdx.graphics.getDeltaTime() * 10);
-		for (int i = 0; i < 3; i++)
-			startSub[i].setMoveOutAction(Constants.RIGHT, 0);
-		for (int i = 3; i < 6; i++)
-			startSub[i].setMoveOutAction(Constants.RIGHT,
-					Gdx.graphics.getDeltaTime() * 5);
-		for (int i = 6; i < 9; i++)
-			startSub[i].setMoveOutAction(Constants.RIGHT,
-					Gdx.graphics.getDeltaTime() * 10);
+		// for (int i = 0; i < 3; i++)
+		// startSub[i].setMoveOutAction(Constants.RIGHT, 0);
+		// for (int i = 3; i < 6; i++)
+		// startSub[i].setMoveOutAction(Constants.RIGHT,
+		// Gdx.graphics.getDeltaTime() * 5);
+		// for (int i = 6; i < 9; i++)
+		// startSub[i].setMoveOutAction(Constants.RIGHT,
+		// Gdx.graphics.getDeltaTime() * 10);
 	}
 }
