@@ -19,6 +19,10 @@ public class Menu extends ScreenAdapter {
 	MenuLabel countdown;
 	MenuLabel zen;
 
+	MenuLabel music;
+	MenuLabel sound;
+	MenuLabel model;
+
 	public Menu(MainGame game) {
 		this.game = game;
 	}
@@ -28,42 +32,36 @@ public class Menu extends ScreenAdapter {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
-		set = new MenuLabel("设置", Assert.getInstance().whiteStyle,
-				MenuLabel.MENU);
-		set.setPosition(0, 0);
+		set = new MenuLabel("设置", Assert.getInstance().whiteStyle, 0);
 		set.addListener(clickListener);
 		stage.addActor(set);
 
-		start = new MenuLabel("开始", Assert.getInstance().blackStyle,
-				MenuLabel.MENU);
-		start.setPosition(0, start.getHeight());
+		start = new MenuLabel("开始", Assert.getInstance().blackStyle, 1);
 		start.addListener(clickListener);
 		stage.addActor(start);
 
-		more = new MenuLabel("更多", Assert.getInstance().whiteStyle,
-				MenuLabel.MENU);
-		more.setPosition(0, more.getHeight() * 2);
+		more = new MenuLabel("更多", Assert.getInstance().whiteStyle, 2);
 		more.addListener(clickListener);
 		stage.addActor(more);
 
-		zen = new MenuLabel("禅", Assert.getInstance().blackStyle,
-				MenuLabel.SUBMENU);
+		zen = new SubMenuLabel("禅", Assert.getInstance().blackStyle);
 		zen.setPosition(-Constants.width, start.getY());
 		zen.addListener(startSubClickListener);
 		stage.addActor(zen);
 
-		normal = new MenuLabel("标准", Assert.getInstance().whiteStyle,
-				MenuLabel.SUBMENU);
+		normal = new SubMenuLabel("标准", Assert.getInstance().whiteStyle);
 		normal.setPosition(-Constants.width, zen.getY() + zen.getHeight());
 		normal.addListener(startSubClickListener);
 		stage.addActor(normal);
 
-		countdown = new MenuLabel("倒计时", Assert.getInstance().blackStyle,
-				MenuLabel.SUBMENU);
+		countdown = new SubMenuLabel("倒计时", Assert.getInstance().blackStyle);
 		countdown.setPosition(-Constants.width,
 				start.getY() + 2 * countdown.getHeight());
 		countdown.addListener(startSubClickListener);
 		stage.addActor(countdown);
+
+		music = new MenuLabel("音乐", Assert.getInstance().whiteStyle);
+		music.setWidth(Constants.width / 2);
 	}
 
 	@Override
