@@ -7,19 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class MenuLabel extends Label {
-	final static int LEFT = -1;
-	final static int CENTER = 0;
-	final static int RIGHT = 1;
-
-	public MenuLabel(CharSequence text, LabelStyle style) {
+	public MenuLabel(CharSequence text, LabelStyle style, int index) {
 		super(text, style);
 		setAlignment(Align.center);
-	}
-
-	public MenuLabel(CharSequence text, LabelStyle style, int index) {
-		this(text, style);
 		setSize(Constants.width, Constants.menuHeight);
 		setPosition(0, index * getHeight());
+	}
+
+	public MenuLabel(CharSequence text, LabelStyle style, int index, float y) {
+		super(text, style);
+		setAlignment(Align.center);
+		setSize(Constants.width, Constants.menuHeight / 3);
+		setPosition(0, y + index * getHeight());
 	}
 
 	public void setMoveOutAction(int direction, float delayTime) {

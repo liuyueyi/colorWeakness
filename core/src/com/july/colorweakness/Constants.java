@@ -8,4 +8,8 @@ public class Constants {
 	
 	public static float menuHeight = height / 3;
 	public static float subMenuHeight = menuHeight / 3;
+	
+	public final static int LEFT = -1;
+	public final static int CENTER = 0;
+	public final static int RIGHT = 1;
 }
