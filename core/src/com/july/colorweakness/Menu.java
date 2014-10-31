@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Menu extends ScreenAdapter {
@@ -15,11 +16,16 @@ public class Menu extends ScreenAdapter {
 	MenuLabel start;
 	MenuLabel set;
 
+	// start sub menu
 	MenuLabel normal;
 	MenuLabel countdown;
 	MenuLabel zen;
-
 	SubMenuLabel startSub[];
+
+	// set sub menu
+	MenuLabel sound;
+	MenuLabel music;
+	MenuLabel model;
 
 	public Menu(MainGame game) {
 		this.game = game;
@@ -44,56 +50,69 @@ public class Menu extends ScreenAdapter {
 
 		zen = new MenuLabel("禅", Assert.getInstance().blackStyle, 0,
 				start.getY());
-		zen.setX(-zen.getWidth());
 		zen.addListener(startSubClickListener);
 		stage.addActor(zen);
 
 		normal = new MenuLabel("标准", Assert.getInstance().whiteStyle, 1,
 				start.getY());
-		normal.setX(-normal.getWidth());
 		normal.addListener(startSubClickListener);
 		stage.addActor(normal);
 
 		countdown = new MenuLabel("倒计时", Assert.getInstance().blackStyle, 2,
 				start.getY());
-		countdown.setX(-countdown.getWidth());
 		countdown.addListener(startSubClickListener);
 		stage.addActor(countdown);
 
 		startSub = new SubMenuLabel[9];
-		startSub[0] = new SubMenuLabel("30s\"",
-				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0,
-				zen.getY());
-		startSub[1] = new SubMenuLabel("60s\"",
-				Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1,
-				zen.getY());
-		startSub[2] = new SubMenuLabel("90s\"",
-				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
-				zen.getY());
-
-		startSub[3] = new SubMenuLabel("4s\"", Assert.getInstance().blackStyle,
-				SubMenuLabel.THREE, 0, normal.getY());
-		startSub[4] = new SubMenuLabel("6s\"", Assert.getInstance().whiteStyle,
-				SubMenuLabel.THREE, 1, normal.getY());
-		startSub[5] = new SubMenuLabel("8s\"", Assert.getInstance().blackStyle,
-				SubMenuLabel.THREE, 2, normal.getY());
-
-		startSub[6] = new SubMenuLabel("50s\"",
-				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0,
-				countdown.getY());
-		startSub[7] = new SubMenuLabel("70s\"",
-				Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1,
-				countdown.getY());
-		startSub[8] = new SubMenuLabel("90s\"",
-				Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
-				countdown.getY());
-
+		String[] txt = { "30s\'", "60s\'", "90s\'", "4s\'", "6s\'", "8s\'",
+				"50s\'", "70s\'", "90s\'" };
+		LabelStyle[] ls = { Assert.getInstance().whiteStyle,
+				Assert.getInstance().blackStyle };
 		for (int i = 0; i < 9; i++) {
+			startSub[i] = new SubMenuLabel(txt[i], ls[i % 2],
+					SubMenuLabel.THREE, i % 3, zen.getY() + i / 3
+							* zen.getHeight());
 			stage.addActor(startSub[i]);
-			System.out.println(i + " x : " + startSub[i].getX() + " y : "
-					+ startSub[i].getY() + " width : " + startSub[i].getWidth()
-					+ " height : " + startSub[i].getHeight());
 		}
+		/*
+		 * startSub[0] = new SubMenuLabel("30s\'",
+		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0, zen.getY());
+		 * startSub[1] = new SubMenuLabel("60s\'",
+		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1, zen.getY());
+		 * startSub[2] = new SubMenuLabel("90s\'",
+		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2, zen.getY());
+		 * 
+		 * startSub[3] = new SubMenuLabel("4s\'",
+		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 0,
+		 * normal.getY()); startSub[4] = new SubMenuLabel("6s\'",
+		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 1,
+		 * normal.getY()); startSub[5] = new SubMenuLabel("8s\'",
+		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 2,
+		 * normal.getY());
+		 * 
+		 * startSub[6] = new SubMenuLabel("50s\'",
+		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0,
+		 * countdown.getY()); startSub[7] = new SubMenuLabel("70s\'",
+		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1,
+		 * countdown.getY()); startSub[8] = new SubMenuLabel("90s\'",
+		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
+		 * countdown.getY());
+		 */
+
+		model = new MenuLabel("模式", Assert.getInstance().whiteStyle, 0,
+				set.getY());
+		model.addListener(setSubClickListener);
+		stage.addActor(model);
+
+		sound = new MenuLabel("声音: 开", Assert.getInstance().blackStyle, 1,
+				set.getY());
+		sound.addListener(setSubClickListener);
+		stage.addActor(sound);
+
+		music = new MenuLabel("音乐: 开", Assert.getInstance().whiteStyle, 2,
+				set.getY());
+		music.addListener(setSubClickListener);
+		stage.addActor(music);
 
 	}
 
@@ -111,13 +130,13 @@ public class Menu extends ScreenAdapter {
 			Gdx.app.log("color", "clicked");
 			if (event.getListenerActor() == set) {
 				// set label clicked
-				startSubMoveOut();
+				
 			} else if (event.getListenerActor() == start) {
 				// start label clicked
-				startSubMoveIn();
+				
 			} else if (event.getListenerActor() == more) {
 				// more label clicked
-				startSubMoveOut();
+				
 			}
 		}
 	};
@@ -126,21 +145,37 @@ public class Menu extends ScreenAdapter {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (event.getListenerActor() == zen) {
-				for (int i = 0; i < 3; i++)
-					startSub[i].setMoveInAction(Constants.RIGHT,
-							Gdx.graphics.getDeltaTime() * 10);
+				zenSubMoveIn();
 			} else if (event.getListenerActor() == normal) {
-				for (int i = 3; i < 6; i++)
-					startSub[i].setMoveInAction(Constants.RIGHT,
-							Gdx.graphics.getDeltaTime() * 5);
+				normalSubMoveIn();
 			} else if (event.getListenerActor() == countdown) {
-				for (int i = 6; i < 9; i++)
-					startSub[i].setMoveInAction(Constants.RIGHT, 0);
+				countdownSubMoveIn();
 			}
 		}
 	};
 
+	private ClickListener setSubClickListener = new ClickListener() {
+		@Override
+		public void clicked(InputEvent event, float x, float y) {
+			if (event.getListenerActor() == sound) {
+				zenSubMoveIn();
+			} else if (event.getListenerActor() == music) {
+				normalSubMoveIn();
+			} else if (event.getListenerActor() == model) {
+				countdownSubMoveIn();
+			}
+		}
+	};
+
+	private ClickListener moreSubClickListener = new ClickListener() {
+		@Override
+		public void clicked(InputEvent event, float x, float y) {
+		}
+	};
+
 	private void startSubMoveIn() {
+		moreSubMoveOut();
+		setSubMoveOut();
 		zen.setMoveInAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 10);
 		normal.setMoveInAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
 		countdown.setMoveInAction(Constants.LEFT, 0);
@@ -148,17 +183,80 @@ public class Menu extends ScreenAdapter {
 	}
 
 	private void startSubMoveOut() {
+		zenSubMoveOut();
+		normalSubMoveOut();
+		countdownSubMoveOut();
 		zen.setMoveOutAction(Constants.LEFT, 0);
 		normal.setMoveOutAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
 		countdown.setMoveOutAction(Constants.LEFT,
 				Gdx.graphics.getDeltaTime() * 10);
-		// for (int i = 0; i < 3; i++)
-		// startSub[i].setMoveOutAction(Constants.RIGHT, 0);
-		// for (int i = 3; i < 6; i++)
-		// startSub[i].setMoveOutAction(Constants.RIGHT,
-		// Gdx.graphics.getDeltaTime() * 5);
-		// for (int i = 6; i < 9; i++)
-		// startSub[i].setMoveOutAction(Constants.RIGHT,
-		// Gdx.graphics.getDeltaTime() * 10);
+	}
+
+	private void zenSubMoveIn() {
+		for (int i = 0; i < 3; i++)
+			startSub[i].setMoveInAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+
+		normalSubMoveOut();
+		countdownSubMoveOut();
+	}
+
+	private void zenSubMoveOut() {
+		for (int i = 0; i < 3; i++)
+			startSub[i].setMoveOutAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+	}
+
+	private void normalSubMoveIn() {
+		for (int i = 3; i < 6; i++)
+			startSub[i].setMoveInAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+		zenSubMoveOut();
+		countdownSubMoveOut();
+	}
+
+	private void normalSubMoveOut() {
+		for (int i = 3; i < 6; i++)
+			startSub[i].setMoveOutAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+	}
+
+	private void countdownSubMoveIn() {
+		for (int i = 6; i < 9; i++)
+			startSub[i].setMoveInAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+		zenSubMoveOut();
+		normalSubMoveOut();
+	}
+
+	private void countdownSubMoveOut() {
+		for (int i = 6; i < 9; i++)
+			startSub[i].setMoveOutAction(Constants.RIGHT,
+					Gdx.graphics.getDeltaTime() * 10);
+	}
+
+	private void moreSubMoveIn() {
+		startSubMoveOut();
+		setSubMoveOut();
+	}
+
+	private void moreSubMoveOut() {
+
+	}
+
+	private void setSubMoveIn() {
+		startSubMoveOut();
+		moreSubMoveOut();
+		model.setMoveInAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 10);
+		sound.setMoveInAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
+		music.setMoveInAction(Constants.LEFT, 0);
+
+	}
+
+	private void setSubMoveOut() {
+		model.setMoveOutAction(Constants.LEFT, 0);
+		sound.setMoveOutAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
+		music.setMoveOutAction(Constants.LEFT,
+				Gdx.graphics.getDeltaTime() * 10);
 	}
 }

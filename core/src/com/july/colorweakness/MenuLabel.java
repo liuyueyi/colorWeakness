@@ -18,7 +18,7 @@ public class MenuLabel extends Label {
 		super(text, style);
 		setAlignment(Align.center);
 		setSize(Constants.width, Constants.menuHeight / 3);
-		setPosition(0, y + index * getHeight());
+		setPosition(-Constants.width, y + index * getHeight());
 	}
 
 	public void setMoveOutAction(int direction, float delayTime) {
