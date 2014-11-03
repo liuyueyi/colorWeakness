@@ -130,13 +130,13 @@ public class Menu extends ScreenAdapter {
 			Gdx.app.log("color", "clicked");
 			if (event.getListenerActor() == set) {
 				// set label clicked
-				
+				setSubMoveIn();
 			} else if (event.getListenerActor() == start) {
 				// start label clicked
-				
+				startSubMoveIn();
 			} else if (event.getListenerActor() == more) {
 				// more label clicked
-				
+				moreSubMoveIn();
 			}
 		}
 	};
@@ -158,11 +158,11 @@ public class Menu extends ScreenAdapter {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (event.getListenerActor() == sound) {
-				zenSubMoveIn();
+				
 			} else if (event.getListenerActor() == music) {
-				normalSubMoveIn();
+				
 			} else if (event.getListenerActor() == model) {
-				countdownSubMoveIn();
+				
 			}
 		}
 	};
