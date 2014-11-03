@@ -12,6 +12,8 @@ public class Game extends ScreenAdapter implements GestureListener {
 	SpriteBatch batch;
 	int mode;
 	float time;
+	int level = 0;
+	
 
 	public Game(MainGame game, int mode, float time) {
 		this.game = game;
@@ -21,7 +23,7 @@ public class Game extends ScreenAdapter implements GestureListener {
 
 	@Override
 	public void show() {
-
+		batch = new SpriteBatch();
 	}
 
 	@Override
