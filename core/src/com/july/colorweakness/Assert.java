@@ -14,10 +14,16 @@ public class Assert {
 	BitmapFont whiteFont;
 	LabelStyle blackStyle;
 	LabelStyle whiteStyle;
+	LabelStyle timeStyle;
+	LabelStyle levelStyle;
 
 	TextureRegion colors[];
 	TextureRegionDrawable trd[];
 	TextureAtlas atlas;
+
+	boolean isSound = false;
+	boolean isMusic = false;
+	int playMode = 0;
 
 	private Assert() {
 	}
@@ -36,9 +42,8 @@ public class Assert {
 
 		atlas = new TextureAtlas(Gdx.files.internal("gfx/color.pack"));
 		colors = new TextureRegion[17];
-		for (int i = 0; i < 17; i++) {
+		for (int i = 0; i < 17; i++)
 			colors[i] = atlas.findRegion("c", i);
-		}
 
 		trd = new TextureRegionDrawable[2];
 		trd[0] = new TextureRegionDrawable(colors[0]); // white
@@ -48,6 +53,8 @@ public class Assert {
 		blackStyle.background = trd[0];
 		whiteStyle.background = trd[1];
 
+		timeStyle = new LabelStyle(whiteFont, Color.GRAY);
+		levelStyle = new LabelStyle(numFont, Color.GRAY);
 	}
 
 	public void dispose() {

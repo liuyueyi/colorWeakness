@@ -24,7 +24,7 @@ public class SubMenuLabel extends Label {
 			setPosition(-getWidth(), y);
 			break;
 		case 1:
-			setPosition(Constants.width + 100, y);
+			setPosition(Constants.width + getWidth(), y);
 			setSize(0, 0);
 			break;
 		case 2:
@@ -44,7 +44,7 @@ public class SubMenuLabel extends Label {
 		case 0:
 			x = -getWidth();
 			break;
-		case 1:			
+		case 1:
 		case 2:
 			x = Constants.width;
 			break;
@@ -60,7 +60,7 @@ public class SubMenuLabel extends Label {
 		if (index == 1) {
 			setPosition(Constants.width / 3, getY());
 			a2 = Actions.sizeTo(Constants.width / 3, Constants.menuHeight / 3,
-					Gdx.graphics.getDeltaTime() * 10);
+					Gdx.graphics.getDeltaTime() * 2);
 		} else {
 			a2 = Actions.moveTo(getWidth() * index, getY(),
 					Gdx.graphics.getDeltaTime() * 10);

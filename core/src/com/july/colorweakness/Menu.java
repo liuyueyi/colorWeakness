@@ -3,6 +3,7 @@ package com.july.colorweakness;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -21,6 +22,7 @@ public class Menu extends ScreenAdapter {
 	MenuLabel countdown;
 	MenuLabel zen;
 	SubMenuLabel startSub[];
+	String[] txt = { "30", "60", "90", "4", "6", "8", "50", "70", "90" };
 
 	// set sub menu
 	MenuLabel sound;
@@ -64,55 +66,46 @@ public class Menu extends ScreenAdapter {
 		stage.addActor(countdown);
 
 		startSub = new SubMenuLabel[9];
-		String[] txt = { "30s\'", "60s\'", "90s\'", "4s\'", "6s\'", "8s\'",
-				"50s\'", "70s\'", "90s\'" };
+
 		LabelStyle[] ls = { Assert.getInstance().whiteStyle,
 				Assert.getInstance().blackStyle };
 		for (int i = 0; i < 9; i++) {
-			startSub[i] = new SubMenuLabel(txt[i], ls[i % 2],
+			startSub[i] = new SubMenuLabel(txt[i] + "s\'", ls[i % 2],
 					SubMenuLabel.THREE, i % 3, zen.getY() + i / 3
 							* zen.getHeight());
+			startSub[i].addListener(playListener);
 			stage.addActor(startSub[i]);
 		}
-		/*
-		 * startSub[0] = new SubMenuLabel("30s\'",
-		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0, zen.getY());
-		 * startSub[1] = new SubMenuLabel("60s\'",
-		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1, zen.getY());
-		 * startSub[2] = new SubMenuLabel("90s\'",
-		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2, zen.getY());
-		 * 
-		 * startSub[3] = new SubMenuLabel("4s\'",
-		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 0,
-		 * normal.getY()); startSub[4] = new SubMenuLabel("6s\'",
-		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 1,
-		 * normal.getY()); startSub[5] = new SubMenuLabel("8s\'",
-		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 2,
-		 * normal.getY());
-		 * 
-		 * startSub[6] = new SubMenuLabel("50s\'",
-		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 0,
-		 * countdown.getY()); startSub[7] = new SubMenuLabel("70s\'",
-		 * Assert.getInstance().blackStyle, SubMenuLabel.THREE, 1,
-		 * countdown.getY()); startSub[8] = new SubMenuLabel("90s\'",
-		 * Assert.getInstance().whiteStyle, SubMenuLabel.THREE, 2,
-		 * countdown.getY());
-		 */
 
 		model = new MenuLabel("模式", Assert.getInstance().whiteStyle, 0,
 				set.getY());
 		model.addListener(setSubClickListener);
 		stage.addActor(model);
+		switch (Assert.getInstance().playMode) {
+		case Constants.NUMBER:
+			model.setText("模式: 纯数");
+			break;
+		case Constants.COLOR:
+			model.setText("模式: 纯色");
+			break;
+		case Constants.MERGE:
+			model.setText("模式: 混合");
+			break;
+		}
 
 		sound = new MenuLabel("声音: 开", Assert.getInstance().blackStyle, 1,
 				set.getY());
 		sound.addListener(setSubClickListener);
 		stage.addActor(sound);
+		if (!Assert.getInstance().isSound)
+			sound.setText("声音: 关");
 
 		music = new MenuLabel("音乐: 开", Assert.getInstance().whiteStyle, 2,
 				set.getY());
 		music.addListener(setSubClickListener);
 		stage.addActor(music);
+		if (!Assert.getInstance().isMusic)
+			music.setText("音乐: 关");
 
 	}
 
@@ -127,7 +120,6 @@ public class Menu extends ScreenAdapter {
 	private ClickListener clickListener = new ClickListener() {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			Gdx.app.log("color", "clicked");
 			if (event.getListenerActor() == set) {
 				// set label clicked
 				setSubMoveIn();
@@ -158,20 +150,80 @@ public class Menu extends ScreenAdapter {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (event.getListenerActor() == sound) {
-				
+				if (Assert.getInstance().isSound) {
+					Assert.getInstance().isSound = false;
+					sound.setText("声音: 关");
+				} else {
+					Assert.getInstance().isSound = true;
+					sound.setText("声音: 开");
+				}
 			} else if (event.getListenerActor() == music) {
-				
+				if (Assert.getInstance().isMusic) {
+					Assert.getInstance().isMusic = false;
+					music.setText("音乐: 关");
+				} else {
+					Assert.getInstance().isMusic = true;
+					music.setText("音乐: 开");
+				}
 			} else if (event.getListenerActor() == model) {
-				
+				switch (Assert.getInstance().playMode) {
+				case Constants.NUMBER:
+					Assert.getInstance().playMode = Constants.COLOR;
+					model.setText("模式: 纯色");
+					break;
+				case Constants.COLOR:
+					Assert.getInstance().playMode = Constants.MERGE;
+					model.setText("模式: 混合");
+					break;
+				case Constants.MERGE:
+					Assert.getInstance().playMode = Constants.NUMBER;
+					model.setText("模式: 纯数");
+					break;
+				}
 			}
 		}
 	};
 
-	private ClickListener moreSubClickListener = new ClickListener() {
+	// private ClickListener moreSubClickListener = new ClickListener() {
+	// @Override
+	// public void clicked(InputEvent event, float x, float y) {
+	// }
+	// };
+
+	private ClickListener playListener = new ClickListener() {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
+			Actor temp = event.getListenerActor();
+			startGame(temp);
 		}
 	};
+
+	/**
+	 * 开始进入游戏
+	 * 
+	 * @param temp
+	 */
+	private void startGame(Actor temp) {
+		for (int i = 0; i < 9; i++) {
+			int mode = 0;
+			if (temp == startSub[i]) {
+				switch (i / 3) {
+				case 0:
+					mode = Constants.ZEN;
+					break;
+				case 1:
+					mode = Constants.NORMAL;
+					break;
+				case 2:
+					mode = Constants.COUNTDOWN;
+					break;
+				}
+				game.setScreen(new Game(game, mode, Integer.parseInt(txt[i])));
+				dispose();
+				break;
+			}
+		}
+	}
 
 	private void startSubMoveIn() {
 		moreSubMoveOut();
@@ -256,7 +308,6 @@ public class Menu extends ScreenAdapter {
 	private void setSubMoveOut() {
 		model.setMoveOutAction(Constants.LEFT, 0);
 		sound.setMoveOutAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 5);
-		music.setMoveOutAction(Constants.LEFT,
-				Gdx.graphics.getDeltaTime() * 10);
+		music.setMoveOutAction(Constants.LEFT, Gdx.graphics.getDeltaTime() * 10);
 	}
 }
