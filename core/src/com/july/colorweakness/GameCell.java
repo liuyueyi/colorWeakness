@@ -52,9 +52,11 @@ public class GameCell extends Actor {
 
 	public void setMoveOutAction() {
 		over = true;
-		Action a1 = Actions.scaleTo(0, 0, Gdx.graphics.getDeltaTime() * 100);
-		Action a2 = Actions.fadeOut(Gdx.graphics.getDeltaTime() * 100);
-		addAction(Actions.parallel(a1, a2));
+		Action a1 = Actions.scaleTo(0, 0, Gdx.graphics.getDeltaTime() * 10);
+		Action a2 = Actions.fadeOut(Gdx.graphics.getDeltaTime() * 10);
+		Action a3 = Actions.moveBy(getWidth() / 2, getHeight() / 2,
+				Gdx.graphics.getDeltaTime() * 10);
+		addAction(Actions.parallel(a1, a2, a3));
 	}
 
 	@Override

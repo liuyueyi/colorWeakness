@@ -38,7 +38,9 @@ public class Assert {
 
 	public void loadTexture() {
 		numFont = new BitmapFont(Gdx.files.internal("font/font.fnt"), false);
+		numFont.setMarkupEnabled(true);
 		whiteFont = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
+		whiteFont.setMarkupEnabled(true);
 
 		atlas = new TextureAtlas(Gdx.files.internal("gfx/color.pack"));
 		colors = new TextureRegion[17];
